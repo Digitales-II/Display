@@ -1,4 +1,4 @@
-TARGET          = Pantalla
+TARGET          = Display
 COLUMNS       	= Columns
 ROW				= Row
 IVERILOG        = iverilog

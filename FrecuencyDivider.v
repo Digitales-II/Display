@@ -5,7 +5,8 @@ module FrecuencyDivider(
 );
 
   parameter f = 25000000;  // Frecuencia de entrada en Hz
-  parameter f_out = 1000;     // Frecuencia de salida deseada en Hz
+  parameter f_out = 100000;     // Frecuencia de salida deseada en Hz
+  parameter max_cunt =f/(2*f_out);
   reg [31:0] count;
   reg toggle;
 
@@ -13,7 +14,7 @@ module FrecuencyDivider(
     if (rst) 
         count <= 0;
     else begin
-        if (count >= f / f_out - 1) begin
+        if (count >= max_cunt - 1) begin
             count <= 0;
             toggle <= ~toggle;
         end else begin
@@ -21,11 +22,8 @@ module FrecuencyDivider(
         end
     end
   end
-
   always @(posedge clk) begin
-    if (count == f / (2 * f_out) - 1) begin
-      o_clk <= toggle;
-    end
+    o_clk <= toggle;
   end
 
 endmodule

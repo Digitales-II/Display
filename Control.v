@@ -4,6 +4,7 @@ module Control(
     //signal de control y banderas
     input wire compColumns,
     output reg addColumns,
+    output reg addRow,
     output reg rstColumns,
 
 
@@ -15,12 +16,13 @@ module Control(
     output reg [1:0] o_data_g,
     output reg [1:0] o_data_b,
 
-    output reg [4:0] o_row_select
+    
 );
 
 initial begin
   addColumns = 0;
   rstColumns = 0;
+  addRow = 0;
 end
  
 
@@ -34,7 +36,7 @@ localparam
 
 reg [2:0] state=s_DataUpdate;
 
-assign  o_data_r = {1'b1, 1'b0};
+assign  o_data_r = {1'b1, 1'b1};
 assign  o_data_g = {1'b1, 1'b1};
 assign  o_data_b = {1'b0, 1'b1};                 
 
@@ -64,11 +66,12 @@ always @(posedge i_clk) begin
         end  
 
         s_IncrementRow: begin
-            o_row_select <= o_row_select + 1;
+            addRow <=1;
             state <= s_LatchClear;
         end
  
         s_LatchClear: begin
+            addRow <=0;
             o_latch  <= 0; 
             state <= s_BlankClear;
         end
