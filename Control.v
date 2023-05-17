@@ -36,9 +36,9 @@ localparam
 
 reg [2:0] state=s_DataUpdate;
 
-assign  o_data_r = {1'b1, 1'b1};
-assign  o_data_g = {1'b1, 1'b1};
-assign  o_data_b = {1'b0, 1'b1};                 
+assign  o_data_r = {1'b1, 1'b0};
+assign  o_data_g = {1'b0, 1'b1};
+assign  o_data_b = {1'b1, 1'b1};                 
 
 reg [7:0] pixels_to_shift=0;
 always @(posedge i_clk) begin
@@ -77,8 +77,9 @@ always @(posedge i_clk) begin
         end
         s_BlankClear:begin 
             o_blank <= 0; 
-            state <= s_DataUpdate;
             rstColumns <= 1; 
+            state <= s_DataUpdate;
+            
         end
         default:
             state <= s_DataUpdate;
