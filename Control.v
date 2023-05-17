@@ -41,13 +41,13 @@ reg [2:0] state=s_DataUpdate;
 assign  o_data_g = {1'b0, 1'b1};
 assign  o_data_b = {1'b1, 1'b1}; */
 reg [4:0] red_register   = {1'b0, 1'b0, 1'b0, 1'b1, 1'b1, 1'b1, 1'b1};
-reg [4:0] green_register = {1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0};
-reg [4:0] blue_register  = {1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}; 
+reg [4:0] green_register = {1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b0};
+reg [4:0] blue_register  = {1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b0}; 
 
 
-reg [4:0] red_register2  = {1'b0, 1'b0, 1'b0, 1'b1, 1'b1, 1'b0, 1'b0};
-reg [4:0] green_register2 = {1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0};
-reg [4:0] blue_register2  = {1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}; 
+reg [4:0] red_register2   = {1'b0, 1'b0, 1'b0, 1'b1, 1'b1, 1'b1, 1'b1};
+reg [4:0] green_register2 = {1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b0};
+reg [4:0] blue_register2  = {1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b0}; 
 
 reg [7:0] pixels_to_shift=0;
 reg [3:0] counter = 0;
@@ -93,8 +93,7 @@ always @(posedge i_clk) begin
             rstColumns <= 1; 
             state <= s_DataUpdate;
             if (compRows == 1) begin
-                if (counter >=7)
-                    // If we hit the lsb, wrap to the msb
+                if (counter >=6)
                     counter <= 0;
                 else
                     counter <= counter + 1;
