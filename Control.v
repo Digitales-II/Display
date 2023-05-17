@@ -3,6 +3,7 @@ module Control(
 
     //signal de control y banderas
     input wire compColumns,
+    input wire compRows,
     output reg addColumns,
     output reg addRow,
     output reg rstColumns,
@@ -36,17 +37,29 @@ localparam
 
 reg [2:0] state=s_DataUpdate;
 
-assign  o_data_r = {1'b1, 1'b0};
+/*assign  o_data_r = {1'b1, 1'b0};
 assign  o_data_g = {1'b0, 1'b1};
-assign  o_data_b = {1'b1, 1'b1};                 
+assign  o_data_b = {1'b1, 1'b1}; */
+reg [4:0] red_register   = {1'b0, 1'b0, 1'b0, 1'b1, 1'b1, 1'b1, 1'b1};
+reg [4:0] green_register = {1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0};
+reg [4:0] blue_register  = {1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}; 
+
+
+reg [4:0] red_register2  = {1'b0, 1'b0, 1'b0, 1'b1, 1'b1, 1'b0, 1'b0};
+reg [4:0] green_register2 = {1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0};
+reg [4:0] blue_register2  = {1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}; 
 
 reg [7:0] pixels_to_shift=0;
+reg [3:0] counter = 0;
 always @(posedge i_clk) begin
     case (state)
         s_DataUpdate: begin 
             if (compColumns) 
                 state <= s_BlanckSet;
             else begin
+                o_data_r <= {red_register2[counter], red_register[counter]};
+                o_data_g <= {green_register2[counter], green_register[counter]};
+                o_data_b <= {blue_register2[counter], blue_register[counter]};
                 rstColumns <=0;
                 addColumns <=1;
                 o_clk_enable <=0;
@@ -79,6 +92,13 @@ always @(posedge i_clk) begin
             o_blank <= 0; 
             rstColumns <= 1; 
             state <= s_DataUpdate;
+            if (compRows == 1) begin
+                if (counter >=7)
+                    // If we hit the lsb, wrap to the msb
+                    counter <= 0;
+                else
+                    counter <= counter + 1;
+            end
             
         end
         default:

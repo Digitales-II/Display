@@ -5,7 +5,7 @@ module FrecuencyDivider(
 );
 
   parameter f = 25000000;  // Frecuencia de entrada en Hz
-  parameter f_out = 100000;     // Frecuencia de salida deseada en Hz
+  parameter f_out = 12500000;     // Frecuencia de salida deseada en Hz
   parameter max_cunt =f/(2*f_out);
   reg [31:0] count;
   reg toggle;

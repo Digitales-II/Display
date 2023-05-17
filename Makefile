@@ -6,7 +6,7 @@ IVERILOG        = iverilog
 SRC             = \
     $(TARGET).v   Control.v FrecuencyDivider.v\
 	$(COLUMNS)/AccColumns.v $(COLUMNS)/CompColumns.v \
-	$(ROW)/AccRow.v \
+	$(ROW)/AccRow.v  $(ROW)/CompRow.v \
 	
 
 
